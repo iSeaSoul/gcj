@@ -9,13 +9,15 @@ def my_print(s):
 		print e
 		print s
 
+# calc maximal days with delivery time fixed
+# the best choice always be average
 def get_maxt_with_tm(TM, minp, M, F):
 	M -= TM * F
 	prev_t, ret = -1, 0
 	for vt in sorted(minp.keys()):
 		len_t = vt - prev_t
 		pi = minp[vt]
-		# day with pi <= pi * TM
+		# day with pi <= len_t * TM
 		if pi * TM * len_t < M:
 			M -= pi * TM * len_t
 			ret += TM * len_t
