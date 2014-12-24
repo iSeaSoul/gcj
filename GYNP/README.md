@@ -1,8 +1,9 @@
-GCJ New Year Project (GNYP)
+#### GCJ New Year Project (GNYP)
 
 Plan:
 
 * Stage 0: `Unsolved_pro_0.pdf` finished with detailed solution
+
     Target time: Jan. 11th, 2015 (2015!) 
 
 ================
