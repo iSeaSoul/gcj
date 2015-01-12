@@ -4,7 +4,7 @@ sys.path.append('../')
 from utils.GCJTemplate import *
 import Queue
 
-laser_char = ['^', '>', 'V', '<']
+laser_char = ['^', '>', 'v', '<']
 laser_dir = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
 INF = 1000000
@@ -14,15 +14,12 @@ def solve():
     maze = [raw_input() for i in xrange(N)]
 
     can_visit = make_array(True, (4, N, M))
-
     can_reach = lambda x, y: x >= 0 and x < N and y >= 0 and y < M and \
         maze[x][y] != '#' and maze[x][y] not in laser_char
-    can_laser_reach = lambda x, y: x >= 0 and x < N and y >= 0 and y < M and \
-        maze[x][y] == '.'
 
     def mark(t, x, y, d):
         step = 1
-        while can_laser_reach(x + laser_dir[d][0] * step, y + laser_dir[d][1] * step):
+        while can_reach(x + laser_dir[d][0] * step, y + laser_dir[d][1] * step):
             can_visit[t][x + laser_dir[d][0] * step][y + laser_dir[d][1] * step] = False
             step += 1
 
