@@ -28,6 +28,16 @@ template<class T> inline void to_max(T &a, const T b) { if (b > a) a = b; }
 
 const int MAXN = 2000000 + 10;
 
+/*
+ Why log(MAXN) is the bound?
+
+ 1) Root always has the maximal priced color, say K. (Otherwises switch them!)
+ 2) So if root has one child, the sub-problem can be reduced to K-1;
+    If root has two children, that means K-2, ..., and so on.
+    That is, Num(K) >= Sigma(Num(i)) (0 <= i < k) >= 2^K.
+
+ */
+
 int n, dp[MAXN][20];
 vector<int> g[MAXN];
 
