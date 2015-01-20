@@ -28,7 +28,7 @@ template<class T> inline void to_max(T &a, const T b) { if (b > a) a = b; }
 
 const int MAXN = 2000000 + 10;
 
-int n, dp[MAXN][3];
+int n, dp[MAXN][20];
 vector<int> g[MAXN];
 
 int calc(int x, int f) {
@@ -39,7 +39,7 @@ int calc(int x, int f) {
     ret = f + 1;
     repeach (ch, g[x]) {
         int mincost = (-1u) >> 1;
-        rep (k, 3) {
+        rep (k, 20) {
             if (k != f) {
                 to_min(mincost, calc(*ch, k));
             }
@@ -68,7 +68,10 @@ int main() {
             g[--pid].push_back(i);
         }
         memset (dp, -1, sizeof(dp));
-        int ret = min(calc(0, 2), min(calc(0, 1), calc(0, 0)));
+        int ret = calc(0, 0);
+        repf (i, 1, 19) {
+            to_min(ret, calc(0, i));
+        }
         printf ("Case #%d: %d\n", Case++, ret);
     }
     return 0;
