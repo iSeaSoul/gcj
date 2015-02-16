@@ -27,7 +27,7 @@ template<class T> inline void to_max(T &a, const T b) { if (b > a) a = b; }
 #define LOG(level, fmt, arg...) \
     printf("[" #level "] [%s:%d] " fmt"\n",\
     __FILE__, __LINE__, ##arg); \
- 
+
 #define LOG_WARNING(fmt, arg...) LOG(WARNING, fmt, ##arg)
 #define LOG_NOTICE(fmt, arg...) LOG(NOTICE, fmt, ##arg)
 #define LOG_FATAL(fmt, arg...) LOG(FATAL, fmt, ##arg)
@@ -73,46 +73,53 @@ char buf[MAXN];
 Trie tree;
 int n, k;
 
+int dp[MAXN][MAXK], dpsz[MAXN];
+
 void update(int& x, int y) {
     if (x == -1 || x > y) {
         x = y;
     }
 }
 
-vector<int> do_dp(int tree_id) {
+void run_dp(int tree_id) {
     if (tree.nodes[tree_id].cnt == 1) {
-        return vector<int>{0, 1};
+        dp[tree_id][0] = 0; dp[tree_id][1] = 1;
+        dpsz[tree_id] = 1;
+        return;
     }
-    vector<int> ret(min(k, tree.nodes[tree_id].cnt) + 1, -1);
-    ret[0] = 0;
+
+    int bound_count = min(k, tree.nodes[tree_id].cnt);
+    memset(dp[tree_id], -1, sizeof(int) * (bound_count + 1));
+    dp[tree_id][0] = 0;
     int max_count = 0;
 
     rep (i, 26) {
         if (tree.nodes[tree_id].next[i] != -1) {
-            vector<int> sub_vec = do_dp(tree.nodes[tree_id].next[i]);
+            int subtree_id = tree.nodes[tree_id].next[i];
+            run_dp(subtree_id);
+            // combine subtrees
             repd (p_word, max_count, 0) {
-                if (ret[p_word] == -1) continue;
-                for (int sub_word = 1; sub_word < sz(sub_vec) && sub_word + p_word <= k; ++sub_word) {
-                    if (sub_vec[sub_word] != -1) {
-                        update(ret[sub_word + p_word], ret[p_word] + sub_vec[sub_word] + sub_word);
-                        to_max(max_count, sub_word + p_word);
+                if (dp[tree_id][p_word] == -1) continue;
+                for (int s_word = 1; s_word <= dpsz[subtree_id] && s_word + p_word <= bound_count; ++s_word) {
+                    if (dp[subtree_id][s_word] != -1) {
+                        update(dp[tree_id][s_word + p_word], dp[tree_id][p_word] + dp[subtree_id][s_word] + s_word);
+                        to_max(max_count, s_word + p_word);
                     }
                 }
             }
         }
     }
     repd (p_word, max_count, 0) {
-        if (ret[p_word] == -1) continue;
-        repf (i, 1, tree.nodes[tree_id].end_cnt) {
-            update(ret[i + p_word], ret[p_word] + i);
+        if (dp[tree_id][p_word] == -1) continue;
+        repf (e_word, 1, tree.nodes[tree_id].end_cnt) {
+            update(dp[tree_id][e_word + p_word], dp[tree_id][p_word] + e_word);
+            to_max(max_count, e_word + p_word);
         }
     }
-    if (sz(ret) > 1) {
-        ret[1] = 1;
+    if (max_count >= 1) {
+        dp[tree_id][1] = 1;
     }
-    // for (int x : ret) printf ("%d ", x);
-    // printf ("done %d\n", tree_id);
-    return move(ret);
+    dpsz[tree_id] = max_count;
 }
 
 int main() {
@@ -127,8 +134,8 @@ int main() {
             printf ("Case #%d: 1\n", Case++);
             continue;
         }
-        vector<int> ret = do_dp(0);
-        printf ("Case #%d: %d\n", Case++, ret[k] - k);
+        run_dp(0);
+        printf ("Case #%d: %d\n", Case++, dp[0][k] - k);
     }
     return 0;
 }
