@@ -1,3 +1,5 @@
+## Facebook HackCup 2015 Solution
+
 ### **Qualification Round**
 
 **Cooking the Books 15pts**
@@ -10,7 +12,7 @@ BitMask Enumeration or DFS.
 
 **Laser Maze 55pts**
 
-BFS using (time % 4, position) as state. Record the minimum step to achieve the state.
+BFS using `(time % 4, position)` as state. Record the minimum step to achieve the state.
 
 To accelerate, BFS to mark all valid grids that the laser cannot reach first.
 
@@ -26,7 +28,7 @@ Build a Trie by the given word order. For each word query, traverse on the tree 
 
 **Winning at Sports 25pts**
 
-As scores <= 2000. Straightforward `DP[score_1][score_2]` is acceptable. 
+As `scores <= 2000`, straightforward `DP[score_1][score_2]` is acceptable. 
 
 For the first type, `score_1` always > `score_2`. 
 
@@ -54,7 +56,7 @@ Simple proof of the bound:
 
 2.  So if root has one child, the sub-problem can be reduced to K-1;
     If root has two children, that means K-2, ..., and so on.
-    That is, Num(K) >= Sigma(Num(i)) (0 <= i < k) >= 2^K.
+    That is, `Num(K) >= Sigma(Num(i)) (0 <= i < k) >= 2^K`.
 
     (Here Num(K) means the total number of different kinds of tree structure with optimal answer no larger than K)
 
@@ -68,7 +70,7 @@ Enumerate whether the first chosen number is the top or the bottom. The the rest
 
 Given the probability of collecting one star, and each time the (virtual) bag contains each star slot independently. Calculating the expectation of collecting all stars in each slot.
 
-Use `probability[round, got_star]` to do dp until the `probability * round` are small enough. In each round, if new S stars are obtained from the unobtained K stars, the probability is `C[K][S] * P^S * (1-P)^(K-S)`.
+Use `probability[round, obtained_star]` to do dp until the `probability * round` are small enough. In each round, if new S stars are obtained from the unobtained K stars, the probability is `C[K][S] * P^S * (1-P)^(K-S)`.
 
 **Autocomplete Strikes Back 25pts**
 
@@ -100,7 +102,7 @@ Given a directed map, find the maximum size of subsets in which every two nodes 
 
 Get SCC to shrink the map to a DAG first. Then a minimum cut can be used to find the maximum independent set in vertex-weighted DAG. The way to construct the map is like the way to build a bipartite map, N - maxflow is the final answer.
 
-**Fox Rocks 45pts(UNDONE)**
+**Fox Rocks 45pts (UNDONE)**
 
 Markov Chain?
 
