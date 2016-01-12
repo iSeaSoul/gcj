@@ -4,7 +4,9 @@ Plan:
 
 * Stage 0: `Unsolved_pro_0.pdf` finished with detailed solution
 
-    Target time: Jan. 11th, 2015 (2015!) 
+    (Failed & Postponed)
+
+* Stage 1: Google Code Jam 2012
 
 ================
 
